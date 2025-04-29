@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="pokedex.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="pokedex-header">
+        <h1><i class="fas fa-pokeball"></i> Pokédex</h1>
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search Pokémon...">
+        </div>
+    </header>
+
+    <div class="pokedex-container">
+        <div class="pokemon-grid" id="pokemonGrid">
+            <!-- Pokemon cards will be dynamically added here -->
+        </div>
+        
+        <div class="pagination">
+            <button id="prevBtn"><i class="fas fa-chevron-left"></i> Previous</button>
+            <span id="currentPage">1</span>
+            <button id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Pokemon Detail Modal -->
+    <div id="pokemonModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="pokedex.js"></script>
+</body>
+</html>
