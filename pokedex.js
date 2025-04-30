@@ -45,8 +45,16 @@ function createPokemonCard(pokemon) {
     const card = document.createElement('div');
     card.className = 'pokemon-card';
     
+    // Fallback image handling
+    const pokemonImage = pokemon.sprites.front_default || 
+                        pokemon.sprites.other['official-artwork'].front_default ||
+                        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png';
+    
     const types = pokemon.types.map(type => {
-        return `<span class="type" style="background-color: ${typeColors[type.type.name]}">${type.type.name}</span>`;
+        return `<span class="type-badge ${type.type.name}">
+                    <i class="fas ${getTypeIcon(type.type.name)}"></i>
+                    ${type.type.name}
+                </span>`;
     }).join('');
 
     card.innerHTML = `
@@ -55,15 +63,58 @@ function createPokemonCard(pokemon) {
             <span class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</span>
         </div>
         <div class="pokemon-image">
-            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+            <img src="${pokemonImage}" alt="${pokemon.name}" 
+                 onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'">
         </div>
         <div class="pokemon-types">
             ${types}
+        </div>
+        <div class="pokemon-stats">
+            <div class="stat">
+                <span>Height: ${pokemon.height/10}m</span>
+            </div>
+            <div class="stat">
+                <span>Weight: ${pokemon.weight/10}kg</span>
+            </div>
+            <div class="abilities">
+                ${pokemon.abilities.map(ability => `
+                    <span class="ability-tag">
+                        ${ability.ability.name}
+                        ${ability.is_hidden ? '<small>(Hidden)</small>' : ''}
+                    </span>
+                `).join('')}
+            </div>
         </div>
     `;
 
     card.addEventListener('click', () => showPokemonDetails(pokemon));
     return card;
+}
+
+// Helper function to get type icons
+function getTypeIcon(type) {
+    const typeIcons = {
+        normal: 'fa-circle',
+        fire: 'fa-fire',
+        water: 'fa-water',
+        electric: 'fa-bolt',
+        grass: 'fa-leaf',
+        ice: 'fa-snowflake',
+        fighting: 'fa-hand-fist',
+        poison: 'fa-skull',
+        ground: 'fa-mountain',
+        flying: 'fa-wind',
+        psychic: 'fa-brain',
+        bug: 'fa-bug',
+        rock: 'fa-gem',
+        ghost: 'fa-ghost',
+        dragon: 'fa-dragon',
+        dark: 'fa-moon',
+        steel: 'fa-shield',
+        fairy: 'fa-wand-sparkles'
+    };
+    
+    return typeIcons[type] || 'fa-circle';
 }
 
 async function showPokemonDetails(pokemon) {
